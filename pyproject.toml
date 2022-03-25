@@ -5,7 +5,7 @@ description = ""
 authors = ["Michael Milton <michael.r.milton@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.6"
 biopython = "^1.79"
 more-itertools = "^8.12.0"
 click = "^8.0.4"
