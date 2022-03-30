@@ -28,7 +28,7 @@ def find_changes(l: list) -> Iterable[int]:
     end = object()
     for pos, (a, b) in enumerate(windowed(l, 2, fillvalue=end)):
         if a != b:
-            yield pos
+            yield pos + 1
         if b == end:
             break
 

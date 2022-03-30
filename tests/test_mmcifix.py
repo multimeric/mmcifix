@@ -1,11 +1,12 @@
 import io
+from unittest import TestCase
 
 import pytest
 import requests
 from Bio.PDB import MMCIFIO, MMCIFParser
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 
-from mmcifix import fix_auth_seq_id, fix_label_seq_id, dict_to_file, fix_dict
+from mmcifix import fix_auth_seq_id, fix_label_seq_id, dict_to_file, fix_dict, find_changes
 
 
 def is_biopython_parseable(d: dict) -> bool:
@@ -18,7 +19,7 @@ def is_biopython_parseable(d: dict) -> bool:
         return True
     except ValueError as e:
         raise e
-        return False
+    return False
 
 
 @pytest.fixture(scope="module")
@@ -52,3 +53,8 @@ def test_fix_alphafill(alphafill_P04406):
 
     # Check that biopython can now parse it
     assert is_biopython_parseable(fixed)
+
+
+def test_find_changes():
+    assert list(find_changes([1, 2, 3])) == [1, 2]
+    assert list(find_changes([1, 1, 2, 2, 3, 3])) == [2, 4]
