@@ -6,7 +6,9 @@ import requests
 from Bio.PDB import MMCIFIO, MMCIFParser
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 
-from mmcifix import fix_auth_seq_id, fix_label_seq_id, dict_to_file, fix_dict, find_changes
+from mmcifix import dict_to_file, fix_dict
+from mmcifix.fixers import FixAuthSeqId, FixLabelSeqId, FixDatabaseId
+from mmcifix.util import find_changes
 
 
 def is_biopython_parseable(d: dict) -> bool:
@@ -29,18 +31,25 @@ def alphafill_P04406() -> dict:
 
 
 def test_fix_label_seq_id(alphafill_P04406: dict):
-    fixed = fix_label_seq_id(alphafill_P04406)
+    fixed = FixLabelSeqId().run(alphafill_P04406)
 
     # Check that we have fixed the unknown ids
     assert all([it not in [".", "?"] for it in fixed['_atom_site.label_seq_id']])
 
 
 def test_fix_auth_seq_id(alphafill_P04406):
-    fixed = fix_auth_seq_id(alphafill_P04406)
+    fixed = FixAuthSeqId().run(alphafill_P04406)
 
     # Check that we have fixed the unknown ids
     assert all([it not in [".", "?"] for it in fixed['_atom_site.auth_seq_id']])
 
+def test_fix_database_id(alphafill_P04406):
+    assert alphafill_P04406["_database_2.database_id"] == ["AF"]
+
+    fixed = FixDatabaseId().run(alphafill_P04406)
+
+    # Check that we have fixed the unknown ids
+    assert fixed["_database_2.database_id"] != ["AF"]
 
 def test_fix_alphafill(alphafill_P04406):
     fixed = fix_dict(alphafill_P04406, fixers=[
