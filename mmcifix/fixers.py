@@ -57,5 +57,5 @@ class FixLabelSeqId(FixerBase):
 class FixDatabaseId(FixerBase):
     def run(self, struct: dict) -> dict:
         result = struct.copy()
-        result["_database_2.database_id"] = "PDB"
+        result["_database_2.database_id"] = ["PDB"]
         return result

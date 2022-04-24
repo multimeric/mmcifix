@@ -50,6 +50,7 @@ def test_fix_database_id(alphafill_P04406):
 
     # Check that we have fixed the unknown ids
     assert fixed["_database_2.database_id"] != ["AF"]
+    assert isinstance(fixed["_database_2.database_id"], list)
 
 def test_fix_alphafill(alphafill_P04406):
     fixed = fix_dict(alphafill_P04406, fixers=[
