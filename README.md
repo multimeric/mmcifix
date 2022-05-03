@@ -26,6 +26,10 @@ with open("some_input.cif") as in_fp, open("some_output.cif") as out_fp:
 
 ## Changes
 
+### 0.3.0
+
+* Added `FixAsymIdForPdb`, which replaces chain IDs that are invalid for PDB format
+
 ### 0.2.1
 
 * Fix bug in `database_id` fixer
