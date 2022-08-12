@@ -26,6 +26,10 @@ with open("some_input.cif") as in_fp, open("some_output.cif") as out_fp:
 
 ## Changes
 
+### 0.4.0
+
+* Added `FixAltId`, which replaces `?` with `.` in the `label_alt_id`, e.g. for compatibility with arpeggio
+
 ### 0.3.0
 
 * Added `FixAsymIdForPdb`, which replaces chain IDs that are invalid for PDB format

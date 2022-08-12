@@ -63,6 +63,17 @@ class FixDatabaseId(FixerBase):
         return result
 
 @fixer
+class FixAltId(FixerBase):
+    """
+    Converts all ? into . in the label_alt_id field
+    """
+    def run(self, struct: dict) -> dict:
+        result = struct.copy()
+        result["_atom_site.label_alt_id"] = ["." if it == "?" else it for it in result["_atom_site.label_alt_id"]]
+        return result
+
+
+@fixer
 class FixAsymIdForPdb(FixerBase):
     """
     Renames the chain IDs to single-letter IDs for PDB compatability

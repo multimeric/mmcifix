@@ -5,6 +5,7 @@ import pytest
 import requests
 from Bio.PDB import MMCIFIO, MMCIFParser
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
+from pathlib import Path
 
 from mmcifix import dict_to_file, fix_dict
 from mmcifix.fixers import FixAuthSeqId, FixLabelSeqId, FixDatabaseId, FixAsymIdForPdb
@@ -26,19 +27,19 @@ def is_biopython_parseable(d: dict) -> bool:
 
 @pytest.fixture(scope="module")
 def alphafill_P04406() -> dict:
-    with open("AF-P04406-F1-model_v1.cif") as fp:
+    with (Path(__file__).parent / "AF-P04406-F1-model_v1.cif").open() as fp:
         return MMCIF2Dict(fp)
 
 
 @pytest.fixture(scope="module")
 def alphafill_P27037() -> dict:
-    with open("AF-P04406-F1-model_v1.cif") as fp:
+    with (Path(__file__).parent / "AF-P27037-F1-model_v1.cif").open() as fp:
         return MMCIF2Dict(fp)
 
 
 @pytest.fixture(scope="module")
 def alphafill_P27037_one_ligand() -> dict:
-    with open("P27037_one_ligand.cif") as fp:
+    with (Path(__file__).parent / "P27037_one_ligand.cif").open() as fp:
         return MMCIF2Dict(fp)
 
 
@@ -99,6 +100,15 @@ def test_fix_alphafill(alphafill_P04406):
 
     # Check that biopython can now parse it
     assert is_biopython_parseable(fixed)
+
+def test_fix_alt_id(alphafill_P04406):
+    fixed = fix_dict(
+        alphafill_P04406,
+        fixers=[
+            "alt_id",
+        ],
+    )
+    assert all([it == "." for it in fixed["_atom_site.label_alt_id"]])
 
 
 def test_find_changes():
